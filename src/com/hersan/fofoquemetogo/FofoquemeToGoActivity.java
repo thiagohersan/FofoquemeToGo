@@ -116,7 +116,7 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 						}
 						// message longer than 3 words
 						else {
-							// if nothing is already happening, play message arduino
+							// if nothing is already happening, play message
 							if((msgQueue.isEmpty() == true)&&(myTTS.isSpeaking() == false)){
 								// TODO test
 								// push message onto queue
@@ -382,7 +382,7 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 	}
 	 */
 
-	// to be called when Arduino is done running its code
+	// to be called when it is time to play a message
 	//    assumes queue is not empty
 	private void playMessage(){
 		playMessage(null);

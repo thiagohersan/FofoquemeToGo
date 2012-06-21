@@ -119,14 +119,17 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 							// if nothing is already happening, play message
 							if((msgQueue.isEmpty() == true)&&(myTTS.isSpeaking() == false)){
 								// TODO test
-								// push message onto queue
+								// push message onto queue... twice
 								msgQueue.offer(message);
+								msgQueue.offer(message);
+								// immediately play it once
 								FofoquemeToGoActivity.this.playMessage();
 							}
 							// else, something is playing or queue is not empty
 							else{
-								// push message (longer than 3 words) onto queue
-								msgQueue.offer(message);								
+								// push message (longer than 3 words) onto queue... twice
+								msgQueue.offer(message);
+								msgQueue.offer(message);
 							}
 						}
 					}
@@ -240,14 +243,16 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 		if((event.getAction() == MotionEvent.ACTION_UP) && (isTTSReady)){
 			// if msg queue is empty, start saying the message
 			if((msgQueue.isEmpty() == true)&&(myTTS.isSpeaking() == false)){
-				// Add the test message to queue 
+				// Add the test message to queue ... twice...
+				msgQueue.offer("Ai, se eu te pego");
 				msgQueue.offer("Ai, se eu te pego");
 				// immediately play it
 				FofoquemeToGoActivity.this.playMessage();
 			}
-			// if queue not empty or playing something... only add to queue without playing it
+			// if queue not empty or playing something... only add to queue (twice) without playing it
 			else {
 				// Add the test message to queue 
+				msgQueue.offer("Ai, se eu te pego");
 				msgQueue.offer("Ai, se eu te pego");
 			}
 			return true;
@@ -299,7 +304,7 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 			public void onUtteranceCompleted (String utteranceId){
 				// check if there are more messages to be said
 				if(msgQueue.peek() != null){
-					// TODO test
+					// TODO test 
 					// TODO add delay
 					FofoquemeToGoActivity.this.playMessage();
 				}

@@ -198,7 +198,7 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 		}
 
 		// Bluetooth-ness
-		Toast.makeText(this, "Starting Bluetooth Connection", Toast.LENGTH_SHORT ).show();
+		//Toast.makeText(this, "Starting Bluetooth Connection", Toast.LENGTH_SHORT ).show();
 		// from : http://stackoverflow.com/questions/6565144/android-bluetooth-com-port
 		//BluetoothAdapter myBTAdapter = BluetoothAdapter.getDefaultAdapter();
 		// this shouldn't happen...
@@ -425,7 +425,8 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 		myTTS.setPitch(1.5f*myRandom.nextFloat()+0.5f);  // [0.5, 2.0]
 		HashMap<String,String> foo = new HashMap<String,String>();
 		foo.put(Engine.KEY_PARAM_UTTERANCE_ID, "1234");
-		myTTS.speak(msg, TextToSpeech.QUEUE_ADD, foo);
+		// speak with a pause afterwards.
+		myTTS.speak(msg+". . ", TextToSpeech.QUEUE_ADD, foo);
 	}
 
 }

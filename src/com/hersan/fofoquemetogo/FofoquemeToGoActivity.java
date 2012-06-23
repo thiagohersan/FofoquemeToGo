@@ -1,9 +1,6 @@
 package com.hersan.fofoquemetogo;
 
 import android.app.Activity;
-//import android.bluetooth.BluetoothAdapter;
-//import android.bluetooth.BluetoothDevice;
-//import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,11 +16,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.widget.Toast;
 import com.hersan.fofoquemetogo.R;
-//import com.hersan.fofoqueme.R;
 
 import java.io.FileOutputStream;
-//import java.io.OutputStream;
-//import java.io.InputStream;
 import java.io.File;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
@@ -34,14 +28,9 @@ import java.util.Locale;
 import java.util.HashMap;
 import java.util.Queue;
 import java.util.Random;
-//import java.util.UUID;
 
 public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnInitListener {
 
-	// UUID for serial connection
-	//private static final UUID SERIAL_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	// BlueSmirf's address
-	//private static final String BLUE_SMIRF_MAC = "00:06:66:45:16:6C";
 	// msg+number file name
 	private static final String MSG_FILE_NAME = "FOFOQUEME";
 	//
@@ -52,9 +41,6 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 	private TextToSpeech myTTS = null;
 	private boolean isTTSReady = false;
 	private SMSReceiver mySMS = null;
-	//private BluetoothSocket myBTSocket = null;
-	//private OutputStream myBTOutStream = null;
-	//private InputStream myBTInStream = null;
 	private OutputStreamWriter myFileWriter = null;
 	private Random myRandom = null;
 
@@ -118,7 +104,6 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 						else {
 							// if nothing is already happening, play message
 							if((msgQueue.isEmpty() == true)&&(myTTS.isSpeaking() == false)){
-								// TODO test
 								// push message onto queue... twice
 								msgQueue.offer(message);
 								msgQueue.offer(message);
@@ -196,20 +181,6 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-
-		// Bluetooth-ness
-		//Toast.makeText(this, "Starting Bluetooth Connection", Toast.LENGTH_SHORT ).show();
-		// from : http://stackoverflow.com/questions/6565144/android-bluetooth-com-port
-		//BluetoothAdapter myBTAdapter = BluetoothAdapter.getDefaultAdapter();
-		// this shouldn't happen...
-		//if (!myBTAdapter.isEnabled()) {
-		//make sure the device's bluetooth is enabled
-		//Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-		//startActivityForResult(enableBluetooth, 12345);
-		//}
-		//else{
-		//this.bluetoothInitHelper(myBTAdapter);
-		//}
 	}
 
 	@Override
@@ -218,17 +189,6 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 		super.onResume();
 		//registerReceiver(mySMS, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
 	}
-
-	/*
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == 12345) {
-			if (resultCode == RESULT_OK) {
-				this.bluetoothInitHelper(BluetoothAdapter.getDefaultAdapter());
-			}
-		}
-	}
-	 */
 
 	@Override
 	protected void onPause() {
@@ -272,9 +232,6 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 
 		// close BT Socket
 		try{
-			//if(myBTSocket != null){
-			//myBTSocket.close();
-			//}
 			if(myFileWriter != null){
 				myFileWriter.close();
 			}
@@ -304,8 +261,6 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 			public void onUtteranceCompleted (String utteranceId){
 				// check if there are more messages to be said
 				if(msgQueue.peek() != null){
-					// TODO test 
-					// TODO add delay
 					FofoquemeToGoActivity.this.playMessage();
 				}
 			}
@@ -317,76 +272,8 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 		isTTSReady = true;
 	}
 
-	/*
-	private void bluetoothInitHelper(BluetoothAdapter myBTA){
-		System.out.println("!!! from BT init helper");
-		// get a device
-		BluetoothDevice myBTDevice = myBTA.getRemoteDevice(BLUE_SMIRF_MAC);
-		// get a socket and stream
-		try{
-			myBTSocket = myBTDevice.createRfcommSocketToServiceRecord(SERIAL_UUID);
-			myBTSocket.connect();
-			myBTOutStream = myBTSocket.getOutputStream();
-			myBTInStream = myBTSocket.getInputStream();
-
-			// if there is a valid input stream,
-			//   attach a thread to listen to input comming in
-			if(myBTInStream != null){
-				new Thread(new Runnable(){
-					@Override
-					public void run(){
-						FofoquemeToGoActivity.this.startStreamListener(myBTInStream);
-					}
-				}).start();
-			}
-		}
-		catch(Exception e){}
-	}
-	 */
 
 	/////////////////////////////
-
-	/*
-	private void sendSerialSignal(){
-		try{
-			// write an H 2 out of 10 times
-			if(myRandom.nextInt(10) < 2){
-				System.out.println("!!!: H");
-				myBTOutStream.write('H');
-			}
-			else{
-				System.out.println("!!!: G");
-				myBTOutStream.write('G');
-			}
-		}
-		catch(Exception e){}
-	}
-	 */
-
-	// an input stream "listener" to be run on a thread
-	// waits for the stop signal from the arduino serial connection
-	/*
-	private void startStreamListener(InputStream is){
-		while(true){
-			try{
-				if((is != null)&&(is.available() > 0)){
-					int b = is.read();
-					// check if it's a S(top) signal
-					//    and if there is something to say
-					if(b == 'S'){
-						if(msgQueue.isEmpty() == false){
-							// play the next text message from queue
-							FofoquemeToGoActivity.this.playMessage();
-							// the tts onComplete listener will deal with the arduino
-						}
-					}
-				}
-			}
-			catch(Exception e){}
-		}
-	}
-	 */
-
 	// to be called when it is time to play a message
 	//    assumes queue is not empty
 	private void playMessage(){

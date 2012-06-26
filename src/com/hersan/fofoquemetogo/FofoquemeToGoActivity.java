@@ -312,8 +312,8 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 		myTTS.setPitch(1.5f*myRandom.nextFloat()+0.5f);  // [0.5, 2.0]
 		HashMap<String,String> foo = new HashMap<String,String>();
 		foo.put(Engine.KEY_PARAM_UTTERANCE_ID, "1234");
-		// speak with a pause afterwards.
-		myTTS.speak(msg+". . ", TextToSpeech.QUEUE_ADD, foo);
+		// speak with a pause before and afterwards.
+		myTTS.speak(". . "+msg+" . . ", TextToSpeech.QUEUE_ADD, foo);
 	}
 
 }

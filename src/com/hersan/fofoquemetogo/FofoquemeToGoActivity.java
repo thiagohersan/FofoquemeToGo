@@ -35,7 +35,7 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 	private static final String MSG_FILE_NAME = "FOFOQUEME";
 	//
 	private static final String[] PREPHRASE  = {"aiaiai aiai. ", "ui ui ui. ", "não acredito. ", "olha essa. ", "ouve só. ", "escuta essa. ", "meu deus. ", "relou. "};
-	private static final String[] POSTPHRASE = {" . assim você me mata.", " . relou.", " . verdade.", " . nem me fale.", " . não me diga.", " . puts.", " . não não não.", " . que coisa.", " . pode creee.", " . pois é."};
+	private static final String[] POSTPHRASE = {" . assim você me mata.", " . relou.", " . verdade.", " . nem me fale.", " . não me diga.", " . puts.", " . não não não.", " . que coisa.", " . pode crê.", " . pois é."};
 	private static final String[] NONPHRASE  = {"só isso? ", "como assim? ", "aaaaaaiii que preguiça. "};
 
 	private TextToSpeech myTTS = null;
@@ -71,7 +71,32 @@ public class FofoquemeToGoActivity extends Activity implements TextToSpeech.OnIn
 					// only write if it's from a real number
 					if(phoneNum.length() > 5) {
 						// clean up the @/# if it's there...
+						//   and clean up brazilian abbreviations
+						message = message.toLowerCase();
 						message = message.replaceAll("[@#]?", "");
+						message = message.replaceAll("¿", "é");
+						message = message.replaceAll("vc", "voucê");
+						message = message.replaceAll("voce", "voucê");
+						message = message.replaceAll("você", "voucê");
+						message = message.replaceAll("bj", "beijo");
+						message = message.replaceAll("pqp", "puta que pariu");
+						message = message.replaceAll("pq", "porque");
+						message = message.replaceAll("qq", "qualquer");
+						message = message.replaceAll("abs", "abraços");
+						message = message.replaceAll("ñ", "não");
+						message = message.replaceAll(" n ", " não ");
+						message = message.replaceAll("nao", "não");
+						message = message.replaceAll("eh", "é");
+						message = message.replaceAll("rs", "ra ra ");
+						message = message.replaceAll("naum", "não");
+						message = message.replaceAll("tb", "também");
+						message = message.replaceAll("tbm", "também");
+						message = message.replaceAll("hj", "hoje");
+						message = message.replaceAll("kd", "cadê");
+						message = message.replaceAll("msg", "mensagem");
+						message = message.replaceAll(" ta ", " tá ");
+						message = message.replaceAll("[():]+", "");
+						
 
 						// write number and msg to SD card
 						try{
